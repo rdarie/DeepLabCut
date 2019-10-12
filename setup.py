@@ -26,7 +26,7 @@ setuptools.setup(
     url="https://github.com/AlexEMG/DeepLabCut",
     install_requires=['certifi','chardet','click','easydict',
                       'h5py~=2.7','imageio','intel-openmp','imgaug',
-                      'ipython','ipython-genutils','imageio~=2.3.0' ,
+                      'ipython','ipython-genutils','imageio~=2.6.0' ,
                       'matplotlib==3.0.3','moviepy','numpy>=1.15.0','opencv-python~=3.4',
                       'pandas','patsy','python-dateutil','pyyaml>=5.1','requests',
                       'ruamel.yaml~=0.15','setuptools','scikit-image','scikit-learn',
