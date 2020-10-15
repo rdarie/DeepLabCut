@@ -182,7 +182,7 @@ class Create_training_dataset(wx.Panel):
         if self.model_comparison_choice.GetStringSelection() == 'No':
             deeplabcut.create_training_dataset(self.config,num_shuffles,net_type=self.net_choice.GetValue(),augmenter_type = self.aug_choice.GetValue())
         if self.model_comparison_choice.GetStringSelection() == 'Yes':
-            deeplabcut.create_training_model_comparison(self.config,num_shuffles,net_types=self.net_type,augmenter_types=self.aug_type)
+            deeplabcut.create_training_model_comparison(self.config,num_shuffles=num_shuffles,net_types=self.net_type,augmenter_types=self.aug_type)
 
 
     def reset_create_training_dataset(self,event):

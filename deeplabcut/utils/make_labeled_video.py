@@ -97,7 +97,7 @@ def CreateVideo(clip,Dataframe,pcutoff,dotsize,colormap,DLCscorer,bodyparts2plot
                 if draw_skeleton:
                     for pair in bpts2connect:
                         if (df_likelihood[pair[0],index] > pcutoff) and (df_likelihood[pair[1],index] >pcutoff):
-#                           rr, cc,val = line_aa(int(df_y[pair[0],index]),int(df_x[pair[0],index]),int(df_y[pair[1],index]), int(df_x[pair[1],index]))
+                            #  rr, cc,val = line_aa(int(df_y[pair[0],index]),int(df_x[pair[0],index]),int(df_y[pair[1],index]), int(df_x[pair[1],index]))
                             rr, cc,val = line_aa(int(np.clip(df_y[pair[0],index],0,ny-1)),int(np.clip(df_x[pair[0],index],0,nx-1)), int(np.clip(df_y[pair[1],index],1,ny-1)), int(np.clip(df_x[pair[1],index],1,nx-1)))
                             image[rr, cc,:] = color_for_skeleton
 

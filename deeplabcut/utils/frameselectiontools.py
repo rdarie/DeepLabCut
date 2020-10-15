@@ -171,7 +171,7 @@ def KmeansbasedFrameselectioncv2(cap,numframes2pick,start,stop,crop,coords,Index
     allocated=False
     if len(Index)>=numframes2pick-1:
         if np.mean(np.diff(Index))>1: #then non-consecutive indices are present, thus cap.set is required (which slows everything down!)
-            print("Extracting and downsampling...",nframes, " frames from the video.")
+            print("Extracting and downsampling...",nframes, " nonconsecutive frames from the video.")
             if color:
                 for counter,index in tqdm(enumerate(Index)):
                     cap.set(1,index) #extract a particular frame

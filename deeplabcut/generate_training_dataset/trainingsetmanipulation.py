@@ -641,10 +641,10 @@ def create_training_dataset(config,num_shuffles=1,Shuffles=None,windows2linux=Fa
                 indexjoints=0
                 joints=np.zeros((len(bodyparts),3))*np.nan
                 for bpindex,bodypart in enumerate(bodyparts):
-                    if Data[bodypart]['x'][jj]<np.shape(im)[1] and Data[bodypart]['y'][jj]<np.shape(im)[0]: #are labels in image?
+                    if Data[bodypart]['x'].iloc[jj]<np.shape(im)[1] and Data[bodypart]['y'].iloc[jj]<np.shape(im)[0]: #are labels in image?
                         joints[indexjoints,0]=int(bpindex)
-                        joints[indexjoints,1]=Data[bodypart]['x'][jj]
-                        joints[indexjoints,2]=Data[bodypart]['y'][jj]
+                        joints[indexjoints,1]=Data[bodypart]['x'].iloc[jj]
+                        joints[indexjoints,2]=Data[bodypart]['y'].iloc[jj]
                         indexjoints+=1
 
                 joints = joints[np.where(
