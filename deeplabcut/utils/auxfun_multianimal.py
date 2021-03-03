@@ -14,7 +14,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from easydict import EasyDict as edict
 
 from deeplabcut.utils import auxiliaryfunctions
 
@@ -69,7 +68,7 @@ def getpafgraph(cfg, printnames=True):
             print("Attention, parts do not exist!", link)
 
     unconnected = set(range(len(multianimalbodyparts))).difference(connected)
-    if unconnected:
+    if unconnected and len(multianimalbodyparts)>1: #for single bpt not important!
         raise ValueError(
             f'Unconnected {", ".join(multianimalbodyparts[i] for i  in unconnected)}. '
             f"For multi-animal projects, all multianimalbodyparts should be connected. "
@@ -454,7 +453,6 @@ def read_inferencecfg(path_inference_config, cfg):
     """Load inferencecfg or initialize it."""
     try:
         inferencecfg = auxiliaryfunctions.read_plainconfig(str(path_inference_config))
-        inferencecfg = edict(inferencecfg)
     except FileNotFoundError:
         inferencecfg = form_default_inferencecfg(cfg)
         auxiliaryfunctions.write_plainconfig(

@@ -140,24 +140,24 @@ def GetPoseandCostsF(
     pbar = tqdm(total=nframes)
     counter = 0
     step = max(10, int(nframes / 100))
+    inds = []
 
     PredicteData = {}
     # initializing constants
-    dist_grid = predict.make_nms_grid(dlc_cfg.nmsradius)
-    stride, halfstride = dlc_cfg.stride, dlc_cfg.stride * 0.5
-    num_joints = dlc_cfg.num_joints
-    det_min_score = dlc_cfg.minconfidence
+    dist_grid = predict.make_nms_grid(dlc_cfg['nmsradius'])
+    stride = dlc_cfg['stride']
+    halfstride = stride * 0.5
+    num_joints = dlc_cfg['num_joints']
+    det_min_score = dlc_cfg['minconfidence']
 
     num_idchannel = dlc_cfg.get("num_idchannel", 0)
-    # TODO Fix the code below...
-    #  We can't just break the whole thing if there is one corrupted frame
-    #  in the middle of the video. Rather iterate over all frames and simply skip corruptions
     while cap.video.isOpened():
         if counter % step == 0:
             pbar.update(step)
         frame = cap.read_frame(crop=cfg["cropping"])
         if frame is not None:
             frames[batch_ind] = img_as_ubyte(frame)
+            inds.append(counter)
             if batch_ind == batchsize - 1:
                 # PredicteData['frame'+str(counter)]=predict.get_detectionswithcosts(frame, dlc_cfg, sess, inputs, outputs, outall=False,nms_radius=dlc_cfg.nmsradius,det_min_score=dlc_cfg.minconfidence)
                 D = predict.get_batchdetectionswithcosts(
@@ -174,20 +174,14 @@ def GetPoseandCostsF(
                     inputs,
                     outputs,
                 )
-                for l in range(batchsize):
-                    # pose = predict.getposeNP(frames,dlc_cfg, sess, inputs, outputs)
-                    # PredicteData[batch_num*batchsize:(batch_num+1)*batchsize, :] = pose
-                    PredicteData[
-                        "frame" + str(batch_num * batchsize + l).zfill(strwidth)
-                    ] = D[l]
-
+                for ind, data in zip(inds, D):
+                    PredicteData["frame" + str(ind).zfill(strwidth)] = data
                 batch_ind = 0
+                inds.clear()
                 batch_num += 1
             else:
                 batch_ind += 1
-        else:
-            nframes = counter
-            print("Detected frames: ", nframes)
+        elif counter >= nframes:
             if batch_ind > 0:
                 # pose = predict.getposeNP(frames, dlc_cfg, sess, inputs, outputs) #process the whole batch (some frames might be from previous batch!)
                 # PredicteData[batch_num*batchsize:batch_num*batchsize+batch_ind, :] = pose[:batch_ind,:]
@@ -206,23 +200,20 @@ def GetPoseandCostsF(
                     outputs,
                     c_engine=c_engine,
                 )
-                for l in range(batch_ind):
-                    # pose = predict.getposeNP(frames,dlc_cfg, sess, inputs, outputs)
-                    # PredicteData[batch_num*batchsize:(batch_num+1)*batchsize, :] = pose
-                    PredicteData[
-                        "frame" + str(batch_num * batchsize + l).zfill(strwidth)
-                    ] = D[l]
+                for ind, data in zip(inds, D):
+                    PredicteData["frame" + str(ind).zfill(strwidth)] = data
             break
         counter += 1
+
     cap.close()
     pbar.close()
     PredicteData["metadata"] = {
-        "nms radius": dlc_cfg.nmsradius,
-        "minimal confidence": dlc_cfg.minconfidence,
-        "PAFgraph": dlc_cfg.partaffinityfield_graph,
-        "all_joints": [[i] for i in range(len(dlc_cfg.all_joints))],
+        "nms radius": dlc_cfg['nmsradius'],
+        "minimal confidence": dlc_cfg['minconfidence'],
+        "PAFgraph": dlc_cfg['partaffinityfield_graph'],
+        "all_joints": [[i] for i in range(len(dlc_cfg['all_joints']))],
         "all_joints_names": [
-            dlc_cfg.all_joints_names[i] for i in range(len(dlc_cfg.all_joints))
+            dlc_cfg['all_joints_names'][i] for i in range(len(dlc_cfg['all_joints']))
         ],
         "nframes": nframes,
         "c_engine": c_engine,
@@ -255,26 +246,23 @@ def GetPoseandCostsS(cfg, dlc_cfg, sess, inputs, outputs, cap, nframes, c_engine
                 inputs,
                 outputs,
                 outall=False,
-                nms_radius=dlc_cfg.nmsradius,
-                det_min_score=dlc_cfg.minconfidence,
+                nms_radius=dlc_cfg['nmsradius'],
+                det_min_score=dlc_cfg['minconfidence'],
                 c_engine=c_engine,
             )
-        else:
-            nframes = counter
+        elif counter >= nframes:
             break
         counter += 1
 
     pbar.close()
     PredicteData["metadata"] = {
-        "nms radius": dlc_cfg.nmsradius,
-        "minimal confidence": dlc_cfg.minconfidence,
-        "PAFgraph": dlc_cfg.partaffinityfield_graph,
-        "all_joints": [[i] for i in range(len(dlc_cfg.all_joints))],
+        "nms radius": dlc_cfg['nmsradius'],
+        "minimal confidence": dlc_cfg['minconfidence'],
+        "PAFgraph": dlc_cfg['partaffinityfield_graph'],
+        "all_joints": [[i] for i in range(len(dlc_cfg['all_joints']))],
         "all_joints_names": [
-            dlc_cfg.all_joints_names[i] for i in range(len(dlc_cfg.all_joints))
+            dlc_cfg['all_joints_names'][i] for i in range(len(dlc_cfg['all_joints']))
         ],
         "nframes": nframes,
     }
-
-    # print(PredicteData)
     return PredicteData, nframes

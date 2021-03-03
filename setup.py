@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-DeepLabCut2.0 Toolbox (deeplabcut.org)
+DeepLabCut2.0-2.2 Toolbox (deeplabcut.org)
 © A. & M. Mathis Labs
-https://github.com/AlexEMG/DeepLabCut
+https://github.com/DeepLabCut/DeepLabCut
 
 Please see AUTHORS for contributors.
-https://github.com/AlexEMG/DeepLabCut/blob/master/AUTHORS
+https://github.com/DeepLabCut/DeepLabCut/blob/master/AUTHORS
 Licensed under GNU Lesser General Public License v3.0
 """
 
@@ -17,37 +17,35 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="deeplabcut",
-    version="2.2b8",
+    version="2.1.10.2",
     author="A. & M. Mathis Labs",
-    author_email="alexander.mathis@bethgelab.org",
+    author_email="alexander@deeplabcut.org",
     description="Markerless pose-estimation of user-defined features with deep learning",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/AlexEMG/DeepLabCut",
+    url="https://github.com/DeepLabCut/DeepLabCut",
     install_requires=[
-        "bayesian-optimization",
+        "python-dateutil",
+        "ipython",
+        "ipython-genutils",
+        "wheel",
         "certifi",
         "chardet",
         "click",
         "cython",
-        "easydict",
         "filterpy",
         "h5py",
+        "ruamel.yaml>=0.15.0",
         "intel-openmp",
         "imgaug",
-        "ipython",
-        "ipython-genutils",
         "numba==0.51.1",
         "matplotlib==3.1.3",
-        "moviepy<=1.0.1",
-        "numpy==1.16.4",
-        "opencv-python-headless",
+        "networkx",
+        "numpy~=1.17.3",
+        "opencv-python-headless~=3.4.9.33",
         "pandas>=1.0.1",
         "patsy",
-        "python-dateutil",
         "pyyaml",
-        "requests",
-        "ruamel.yaml>=0.15.0",
         "setuptools",
         "scikit-image",
         "scikit-learn",
@@ -57,7 +55,8 @@ setuptools.setup(
         "tables",
         "tensorpack==0.9.8",
         "tqdm",
-        "wheel",
+        "moviepy<=1.0.1",
+        "bayesian-optimization"
     ],
     scripts=["deeplabcut/pose_estimation_tensorflow/models/pretrained/download.sh"],
     packages=setuptools.find_packages(),
