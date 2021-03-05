@@ -68,6 +68,7 @@ def extract_frames(
     cluster_color=False,
     opencv=True,
     slider_width=25,
+    user_index=None
 ):
     """
     Extracts frames from the videos in the config.yaml file. Only the videos in the config.yaml will be used to select the frames.\n
@@ -285,6 +286,8 @@ def extract_frames(
                             resizewidth=cluster_resizewidth,
                             color=cluster_color,
                         )
+                elif algo == "user_supplied":
+                    frames2pick = user_index[vindex]
                 else:
                     print(
                         "Please implement this method yourself and send us a pull request! Otherwise, choose 'uniform' or 'kmeans'."

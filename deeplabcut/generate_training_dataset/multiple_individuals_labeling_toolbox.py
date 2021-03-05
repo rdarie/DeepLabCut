@@ -1245,10 +1245,6 @@ class MainFrame(wx.Frame):
         self.dataFrame = self.dataFrame.reindex(
             columns=self.individual_names, level="individuals"
         ).reindex(columns=config_bpts, level="bodyparts")
-        investigatingHDF = True
-        if investigatingHDF:
-            print('self.dataFrame.index = \n {} \n'.format(self.dataFrame.index))
-            print('self.dataFrame.columns = \n {} \n'.format(self.dataFrame.columns))
         self.dataFrame.to_csv(
             os.path.join(self.dir, "CollectedData_" + self.scorer + ".csv")
         )
