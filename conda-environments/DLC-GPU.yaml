@@ -25,7 +25,8 @@ dependencies:
   - python=3.7
   - pip
   - tensorflow-gpu==1.13.1
-  - cudnn=7
+  - cudnn=7.4
+  - cudatoolkit=10.0
   - wxpython<4.1.0
   - jupyter
   - nb_conda
