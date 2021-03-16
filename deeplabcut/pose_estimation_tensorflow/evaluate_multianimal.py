@@ -705,7 +705,7 @@ def evaluate_multianimal_crossvalidate(
                 2 * stats.mean().squeeze()
             )  # Taken as 2*SD error between predictions and ground truth
         else:
-            dcorr = 10
+            dcorr = dcorr
         inferencecfg['topktoretain'] = np.inf
         inferencecfg, opt = crossvalutils.bayesian_search(
             config,
