@@ -195,7 +195,7 @@ class VideoWriter(VideoReader):
         self._bbox = bbox
 
     def shorten(
-        self, start, end, suffix="short", dest_folder=None, validate_inputs=True
+        self, start, end, suffix="short", dest_folder=None, validate_inputs=True, blocking=True
     ):
         """
         Shorten the video from start to end.
@@ -241,7 +241,10 @@ class VideoWriter(VideoReader):
             f"ffmpeg -n -i {self.video_path} -ss {start} -to {end} "
             f"-c:a copy {output_path}"
         )
-        subprocess.call(command, shell=True)
+        if blocking:
+            subprocess.call(command, shell=True)
+        else:
+            subprocess.Popen(command, shell=True)
         return output_path
 
     def split(self, n_splits, suffix="split", dest_folder=None):
@@ -335,7 +338,7 @@ def imresize(img, size=1.0, interpolationmethod=cv2.INTER_AREA):
 
 
 def ShortenVideo(
-    vname, start="00:00:01", stop="00:01:00", outsuffix="short", outpath=None
+    vname, start="00:00:01", stop="00:01:00", outsuffix="short", outpath=None, blocking=True
 ):
     """
     Auxiliary function to shorten video and output with outsuffix appended.
@@ -374,7 +377,7 @@ def ShortenVideo(
     Extracts (sub)video from minute 17 to 22 and and saves it in C:\\yourusername\\rig-95\\Videos as reachingvideo1brief.avi
     """
     writer = VideoWriter(vname)
-    return writer.shorten(start, stop, outsuffix, outpath)
+    return writer.shorten(start, stop, outsuffix, outpath, blocking=blocking)
 
 
 def CropVideo(
